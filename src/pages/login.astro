@@ -1,6 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
+// If authentication is disabled, redirect to home
+if (import.meta.env.PUBLIC_ACCESS_PASSWORD === 'false') {
+  return Astro.redirect('/');
+}
+
 // If already authenticated, redirect to home
 if (Astro.cookies.get('authenticated')?.value === 'true') {
   return Astro.redirect('/');

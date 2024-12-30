@@ -1,4 +1,4 @@
-# 构建阶段
+# Build stage
 FROM node:18-alpine as builder
 WORKDIR /app
 COPY package*.json ./
@@ -6,7 +6,7 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-# 运行阶段
+# Runtime stage
 FROM node:18-alpine
 WORKDIR /app
 COPY --from=builder /app/dist ./dist

@@ -15,8 +15,11 @@ An AI-powered assistant built with Astro and multiple language model integration
 ## 📷 Screenshots
 
 <div align="center">
-  <img src="Snapshot/index.png" width="45%" alt="index">
-  <img src="Snapshot/setting.png" width="45%" alt="settings">
+  <div class="flex justify-center gap-4 mb-4">
+    <img src="Snapshot/login.png" width="45%" alt="index">
+    <img src="Snapshot/setting.png" width="45%" alt="settings">
+  </div>
+  <img src="Snapshot/index.png" width="92%" alt="login">
 </div>
 
 ## 🚀 Features
