@@ -12,6 +12,13 @@ An AI-powered assistant built with Astro and multiple language model integration
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fwanghui5801%2FAstro-Ai&env=PUBLIC_OPENAI_API_KEY,PUBLIC_ANTHROPIC_API_KEY,PUBLIC_GOOGLE_API_KEY,PUBLIC_DEEPSEEK_API_KEY,PUBLIC_DEFAULT_MODEL,PUBLIC_SHOW_SETTINGS&project-name=ai-assistant&repository-name=ai-assistant)
 
+## 🚀 Screenshots
+
+<div align="center">
+  <img src="Snapshot/index.png" width="45%" alt="index">
+  <img src="Snapshot/setting.png" width="45%" alt="settings">
+</div>
+
 ## 🚀 Features
 
 - 🤖 Multi-model support (GPT, Claude, Gemini, DeepSeek)
