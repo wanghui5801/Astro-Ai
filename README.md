@@ -4,9 +4,9 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)](https://hub.docker.com/r/xhh1128/astro-ai)
-<!-- [![Docker Pulls](https://img.shields.io/docker/pulls/xhh1128/astro-ai.svg)](https://hub.docker.com/r/xhh1128/astro-ai) -->
 [![Vercel](https://img.shields.io/badge/Vercel-000000?logo=vercel&logoColor=white)](https://vercel.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<!-- [![Docker Pulls](https://img.shields.io/docker/pulls/xhh1128/astro-ai.svg)](https://hub.docker.com/r/xhh1128/astro-ai) -->
 
 An AI-powered assistant built with Astro and multiple language model integrations.
 
@@ -67,9 +67,7 @@ Visit the following sites to obtain your API keys:
 
 ## 📄 Deploy with Docker
 
-<a href="https://hub.docker.com/r/xhh1128/astro-ai">
-  <img src="https://www.docker.com/wp-content/uploads/2022/03/horizontal-logo-monochromatic-white.png" alt="Deploy on Docker" height="35">
-</a>
+[![Deploy on Docker](https://img.shields.io/badge/Deploy%20on-Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://hub.docker.com/r/xhh1128/astro-ai)
 
 1. Pull the Docker image:
 ```bash
