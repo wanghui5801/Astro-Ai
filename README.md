@@ -1,14 +1,14 @@
 # AI Assistant
 
-An AI-powered assistant built with Astro and multiple language model integrations.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fwanghui5801%2FAstro-Ai&env=PUBLIC_OPENAI_API_KEY,PUBLIC_ANTHROPIC_API_KEY,PUBLIC_GOOGLE_API_KEY,PUBLIC_DEEPSEEK_API_KEY,PUBLIC_DEFAULT_MODEL,PUBLIC_SHOW_SETTINGS&project-name=ai-assistant&repository-name=ai-assistant)
-
 [![Astro](https://img.shields.io/badge/Astro-FF5D01?logo=astro&logoColor=white)](https://astro.build)
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
 [![Vercel](https://img.shields.io/badge/Vercel-000000?logo=vercel&logoColor=white)](https://vercel.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+An AI-powered assistant built with Astro and multiple language model integrations.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fwanghui5801%2FAstro-Ai&env=PUBLIC_OPENAI_API_KEY,PUBLIC_ANTHROPIC_API_KEY,PUBLIC_GOOGLE_API_KEY,PUBLIC_DEEPSEEK_API_KEY,PUBLIC_DEFAULT_MODEL,PUBLIC_SHOW_SETTINGS&project-name=ai-assistant&repository-name=ai-assistant)
 
 ## 🚀 Features
 
