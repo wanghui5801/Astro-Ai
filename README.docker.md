@@ -27,6 +27,7 @@ PUBLIC_GOOGLE_API_KEY=your-google-key
 PUBLIC_DEEPSEEK_API_KEY=your-deepseek-key
 PUBLIC_DEFAULT_MODEL=gpt-4-turbo-preview
 PUBLIC_SHOW_SETTINGS=true
+PUBLIC_ACCESS_PASSWORD=your-access-password
 ```
 
 3. Run with Docker:
@@ -55,6 +56,7 @@ ai-assistant:
         - PUBLIC_DEEPSEEK_API_KEY=${PUBLIC_DEEPSEEK_API_KEY}
         - PUBLIC_DEFAULT_MODEL=${PUBLIC_DEFAULT_MODEL}
         - PUBLIC_SHOW_SETTINGS=${PUBLIC_SHOW_SETTINGS}
+        - PUBLIC_ACCESS_PASSWORD=${PUBLIC_ACCESS_PASSWORD}
     restart: unless-stopped
 ```
 
@@ -76,6 +78,7 @@ docker-compose up -d
 | PUBLIC_DEEPSEEK_API_KEY | Your DeepSeek API key | Yes |
 | PUBLIC_DEFAULT_MODEL | Default model to use | Yes |
 | PUBLIC_SHOW_SETTINGS | Show settings page | No |
+| PUBLIC_ACCESS_PASSWORD | Password for accessing the application | Yes |
 
 ## Source Code
 

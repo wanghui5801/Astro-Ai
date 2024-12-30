@@ -10,9 +10,9 @@
 
 An AI-powered assistant built with Astro and multiple language model integrations.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fwanghui5801%2FAstro-Ai&env=PUBLIC_OPENAI_API_KEY,PUBLIC_ANTHROPIC_API_KEY,PUBLIC_GOOGLE_API_KEY,PUBLIC_DEEPSEEK_API_KEY,PUBLIC_DEFAULT_MODEL,PUBLIC_SHOW_SETTINGS&project-name=ai-assistant&repository-name=ai-assistant)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fwanghui5801%2FAstro-Ai&env=PUBLIC_OPENAI_API_KEY,PUBLIC_ANTHROPIC_API_KEY,PUBLIC_GOOGLE_API_KEY,PUBLIC_DEEPSEEK_API_KEY,PUBLIC_DEFAULT_MODEL,PUBLIC_SHOW_SETTINGS,PUBLIC_ACCESS_PASSWORD&project-name=ai-assistant&repository-name=ai-assistant)
 
-## 🚀 Screenshots
+## 📷 Screenshots
 
 <div align="center">
   <img src="Snapshot/index.png" width="45%" alt="index">
@@ -26,6 +26,7 @@ An AI-powered assistant built with Astro and multiple language model integration
 - ✨ Markdown & LaTeX support
 - 💾 Chat history with local storage
 - 📱 Responsive design
+- 🔒 Password-protected access
 
 ## 🛠️ Environment Variables
 
@@ -38,6 +39,7 @@ PUBLIC_GOOGLE_API_KEY=     # Your Google API key
 PUBLIC_DEEPSEEK_API_KEY=   # Your DeepSeek API key
 PUBLIC_DEFAULT_MODEL=      # Default model (e.g., "gpt-3.5-turbo")
 PUBLIC_SHOW_SETTINGS=      # Show settings page ("true" or "false")
+PUBLIC_ACCESS_PASSWORD=     # Password for accessing the application
 ```
 
 ## 🚀 Quick Start
@@ -96,7 +98,13 @@ PUBLIC_SHOW_SETTINGS=true
 docker run -d \
   --name ai-assistant \
   -p 4321:4321 \
-  --env-file .env \
+  -e PUBLIC_OPENAI_API_KEY=your-openai-key \
+  -e PUBLIC_ANTHROPIC_API_KEY=your-anthropic-key \
+  -e PUBLIC_GOOGLE_API_KEY=your-google-key \
+  -e PUBLIC_DEEPSEEK_API_KEY=your-deepseek-key \
+  -e PUBLIC_DEFAULT_MODEL=gpt-4-turbo-preview \
+  -e PUBLIC_SHOW_SETTINGS=true \
+  -e PUBLIC_ACCESS_PASSWORD=your-access-password \
   xhh1128/astro-ai:latest
 ```
 
@@ -118,6 +126,7 @@ services:
       - PUBLIC_DEEPSEEK_API_KEY=${PUBLIC_DEEPSEEK_API_KEY}
       - PUBLIC_DEFAULT_MODEL=${PUBLIC_DEFAULT_MODEL}
       - PUBLIC_SHOW_SETTINGS=${PUBLIC_SHOW_SETTINGS}
+      - PUBLIC_ACCESS_PASSWORD=${PUBLIC_ACCESS_PASSWORD}
     restart: unless-stopped
 ```
 
@@ -139,6 +148,7 @@ docker-compose up -d
    - PUBLIC_DEEPSEEK_API_KEY
    - PUBLIC_DEFAULT_MODEL
    - PUBLIC_SHOW_SETTINGS
+   - PUBLIC_ACCESS_PASSWORD
 4. Deploy and enjoy! 🎉
 
 ## 📝 Notes
