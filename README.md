@@ -1,34 +1,42 @@
-# Astro Starter Kit: Basics
+# AI Research Assistant
 
-```sh
-npm create astro@latest -- --template basics
+An AI-powered research assistant built with Astro and multiple language model integrations.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FYOUR_USERNAME%2FYOUR_REPO_NAME&env=PUBLIC_OPENAI_API_KEY,PUBLIC_ANTHROPIC_API_KEY,PUBLIC_GOOGLE_API_KEY,PUBLIC_DEEPSEEK_API_KEY,PUBLIC_DEFAULT_MODEL,PUBLIC_SHOW_SETTINGS&project-name=ai-research-assistant&repository-name=ai-research-assistant)
+
+## 🚀 Features
+
+- Multi-model support (GPT, Claude, Gemini, DeepSeek)
+- Dark/Light theme
+- Markdown & LaTeX support
+- Chat history with local storage
+- Responsive design
+
+## 🛠️ Environment Variables
+
+Before deploying, make sure to configure these environment variables:
+
+```env
+PUBLIC_OPENAI_API_KEY=     # Your OpenAI API key
+PUBLIC_ANTHROPIC_API_KEY=  # Your Anthropic API key
+PUBLIC_GOOGLE_API_KEY=     # Your Google API key
+PUBLIC_DEEPSEEK_API_KEY=   # Your DeepSeek API key
+PUBLIC_DEFAULT_MODEL=      # Default model (e.g., "gpt-3.5-turbo")
+PUBLIC_SHOW_SETTINGS=      # Show settings page ("true" or "false")
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+## 🚀 Quick Start
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+1. Clone the repository
+2. Install dependencies:
+```bash
+npm install
 ```
-
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+3. Create a `.env` file with the required environment variables
+4. Start the development server:
+```bash
+npm run dev
+```
 
 ## 🧞 Commands
 
@@ -40,9 +48,34 @@ All commands are run from the root of the project, from a terminal:
 | `npm run dev`             | Starts local dev server at `localhost:4321`      |
 | `npm run build`           | Build your production site to `./dist/`          |
 | `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
 
-## 👀 Want to learn more?
+## 🔑 API Keys Setup
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Visit the following sites to obtain your API keys:
+- OpenAI: https://platform.openai.com/account/api-keys
+- Anthropic: https://console.anthropic.com/
+- Google AI: https://makersuite.google.com/app/apikeys
+- DeepSeek: https://platform.deepseek.com/
+
+## 📄 Deploy on Vercel
+
+1. Fork this repository
+2. Click the "Deploy with Vercel" button above
+3. Configure the required environment variables in Vercel:
+   - PUBLIC_OPENAI_API_KEY
+   - PUBLIC_ANTHROPIC_API_KEY
+   - PUBLIC_GOOGLE_API_KEY
+   - PUBLIC_DEEPSEEK_API_KEY
+   - PUBLIC_DEFAULT_MODEL
+   - PUBLIC_SHOW_SETTINGS
+4. Deploy and enjoy!
+
+## 📝 Notes
+
+- Make sure to set up all required API keys in your environment variables
+- The settings page can be enabled/disabled using `PUBLIC_SHOW_SETTINGS`
+- Chat history is stored in localStorage
+
+## 📄 License
+
+MIT License

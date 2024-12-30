@@ -1,0 +1,424 @@
+---
+---
+
+<div class="flex flex-col h-[calc(100vh-12rem)] bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700">
+  <div class="p-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
+    <h2 class="text-lg font-medium text-slate-800 dark:text-white">Chat</h2>
+    <button
+      id="clear-history"
+      class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-white bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-md transition-colors duration-200"
+      onclick="
+        const modelName = JSON.parse(localStorage.getItem('api-settings') || '{}')['model-name'];
+        if (modelName) {
+          localStorage.removeItem(`${modelName}-history`);
+        }
+        document.getElementById('chat-messages').innerHTML = '';
+        window.location.reload();
+      "
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+      </svg>
+      Clear History
+    </button>
+  </div>
+
+  <div class="flex-1 overflow-y-auto p-6 space-y-4" id="chat-messages">
+    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900 dark:to-indigo-900 border border-blue-100 dark:border-blue-800 rounded-lg p-4 text-sm text-blue-800 dark:text-blue-100">
+      Welcome! I'm your AI research assistant. How can I help you today?
+    </div>
+  </div>
+  
+  <div class="border-t border-slate-200 dark:border-slate-700 p-6 bg-slate-50 dark:bg-slate-800">
+    <form id="chat-form" class="flex gap-4">
+      <textarea
+        id="message-input"
+        class="flex-1 rounded-lg border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-4 py-2.5 resize-none"
+        placeholder="Type your question..."
+        rows="1"
+      ></textarea>
+      <button
+        type="submit"
+        class="inline-flex items-center px-5 py-2.5 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+        </svg>
+        Send
+      </button>
+    </form>
+  </div>
+</div>
+
+<script>
+  import { marked } from 'marked';
+  import { markedHighlight } from 'marked-highlight';
+  import hljs from 'highlight.js';
+  import { getApiConfig } from '../utils/apiConfig';
+
+  const form = document.getElementById('chat-form');
+  const input = document.getElementById('message-input');
+  const messagesContainer = document.getElementById('chat-messages');
+  const submitButton = document.querySelector('button[type="submit"]');
+
+  let isLoading = false;
+
+  // Initialize marked configuration
+  marked.use(markedHighlight({
+    langPrefix: 'language-',
+    highlight(code, lang) {
+      if (lang && hljs.getLanguage(lang)) {
+        try {
+          return hljs.highlight(code, { language: lang }).value;
+        } catch (err) {
+          console.error('Highlight error:', err);
+        }
+      }
+      return code;
+    }
+  }));
+
+  // Configure marked options
+  marked.setOptions({
+    gfm: true,
+    breaks: true,
+    sanitize: false,
+    smartLists: true,
+    smartypants: true,
+    tables: true
+  });
+
+  // Markdown parsing function
+  function parseMarkdown(text) {
+    try {
+      // Protect math expressions
+      const mathExpressions = [];
+      let index = 0;
+      
+      // Temporarily replace math expressions with placeholders
+      text = text.replace(/(\$\$[\s\S]*?\$\$|\$[^\$\n]+\$|\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\))/g, (match) => {
+        const placeholder = `MATH_EXPRESSION_${index}`;
+        mathExpressions.push(match);
+        index++;
+        return placeholder;
+      });
+
+      const html = marked(text);
+
+      // Restore math expressions and render with KaTeX
+      let processedHtml = html.replace(/MATH_EXPRESSION_(\d+)/g, (_, i) => {
+        const math = mathExpressions[i];
+        try {
+          if (math.startsWith('$$') || math.startsWith('\\[')) {
+            // Display mode
+            const content = math.startsWith('$$') ? math.slice(2, -2) : math.slice(2, -2);
+            return `<div class="katex-display">${katex.renderToString(content, {
+              displayMode: true,
+              throwOnError: false,
+              output: 'html'
+            })}</div>`;
+          } else {
+            // Inline mode
+            const content = math.startsWith('$') ? math.slice(1, -1) : math.slice(2, -2);
+            return `<span class="katex-inline">${katex.renderToString(content, {
+              displayMode: false,
+              throwOnError: false,
+              output: 'html'
+            })}</span>`;
+          }
+        } catch (err) {
+          console.error('KaTeX rendering error:', err);
+          return math; // If rendering fails, return original text
+        }
+      });
+
+      // Handle code blocks and other styles
+      processedHtml = processedHtml
+        .replace(
+          /<pre><code class="(language-[^"]+)">([\s\S]*?)<\/code><\/pre>/g,
+          (_, lang, code) => {
+            const temp = document.createElement('div');
+            temp.innerHTML = code;
+            const decodedCode = temp.textContent || temp.innerText;
+            
+            return `
+              <div class="relative group">
+                <pre class="relative my-4"><code class="${lang} block p-4 overflow-x-auto rounded-lg bg-slate-800 text-slate-50 leading-6">${code}</code></pre>
+                <button class="copy-button absolute top-3 right-3 opacity-0 group-hover:opacity-100 bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm rounded px-2 py-1 transition-all" data-code="${decodedCode.replace(/"/g, '&quot;')}">
+                  Copy
+                </button>
+              </div>
+            `;
+          }
+        )
+        .replace(
+          /<table>/g,
+          '<table class="border-collapse border border-slate-400 dark:border-slate-600 my-4 w-full">'
+        )
+        .replace(
+          /<th>/g,
+          '<th class="border border-slate-400 dark:border-slate-600 p-2 bg-slate-100 dark:bg-slate-700">'
+        )
+        .replace(
+          /<td>/g,
+          '<td class="border border-slate-400 dark:border-slate-600 p-2">'
+        )
+        .replace(
+          /<hr\s*\/?>/g,
+          '<hr class="my-6 border-t border-slate-300 dark:border-slate-600">'
+        )
+        .replace(
+          /<code>([^<]+)<\/code>/g,
+          '<code class="px-1.5 py-0.5 mx-0.5 rounded-md bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 font-mono">$1</code>'
+        )
+        .replace(
+          /<p>/g,
+          '<p class="leading-6 mb-0">'
+        );
+
+      return processedHtml;
+    } catch (error) {
+      console.error('Markdown parsing error:', error);
+      return text;
+    }
+  }
+
+  // Add loading animation component
+  function createLoadingIndicator() {
+    const loadingDiv = document.createElement('div');
+    loadingDiv.className = 'flex items-center space-x-2 p-4 bg-slate-100 dark:bg-slate-700 rounded-lg';
+    loadingDiv.innerHTML = `
+      <div class="flex space-x-2">
+        <div class="w-2 h-2 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+        <div class="w-2 h-2 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+        <div class="w-2 h-2 bg-blue-600 rounded-full animate-bounce"></div>
+      </div>
+    `;
+    return loadingDiv;
+  }
+
+  // Load chat history from localStorage
+  window.addEventListener('load', () => {
+    const { modelName } = getApiConfig();
+    if (!modelName) return;
+    
+    const historyKey = `${modelName}-history`;
+    const chatHistory = JSON.parse(localStorage.getItem(historyKey) || '[]');
+    
+    // Only show recent conversations
+    const recentHistory = chatHistory.slice(-12); // Keep 6 rounds of conversation (12 messages)
+    recentHistory.forEach(({ role, content }) => {
+      appendMessage(role, content);
+    });
+  });
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!input || !messagesContainer || isLoading) return;
+
+    const message = input.value;
+    if (!message.trim()) return;
+    
+    // Clear input box and reset height
+    input.value = '';
+    input.style.height = 'auto'; // Reset height to auto
+    input.style.height = '2.5rem'; // Set back to default height (matching textarea's initial height)
+
+    // Get configuration
+    const { modelName, openaiKey, claudeKey, googleKey, deepseekKey } = getApiConfig();
+    let apiKey;
+
+    if (modelName?.startsWith('gemini')) {
+      apiKey = googleKey;
+    } else if (modelName?.startsWith('deepseek')) {
+      apiKey = deepseekKey;
+    } else if (modelName?.startsWith('claude')) {
+      apiKey = claudeKey;
+    } else if (modelName?.startsWith('gpt')) {
+      apiKey = openaiKey;
+    }
+
+    if (!modelName || !apiKey) {
+      appendMessage('system', 'API configuration is missing. Please check your environment variables or settings.');
+      return;
+    }
+
+    appendMessage('user', message);
+    saveHistory('user', message);
+
+    // Add loading state
+    isLoading = true;
+    input.disabled = true;
+    submitButton.disabled = true;
+    const loadingIndicator = createLoadingIndicator();
+    messagesContainer.appendChild(loadingIndicator);
+
+    try {
+      const historyKey = `${modelName}-history`;
+      const chatHistory = JSON.parse(localStorage.getItem(historyKey) || '[]');
+
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message,
+          model: modelName,
+          apiKey: apiKey,
+          history: chatHistory
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      // Remove loading indicator
+      if (messagesContainer && loadingIndicator) {
+        messagesContainer.removeChild(loadingIndicator);
+      }
+      
+      // Add typewriter effect
+      if (messagesContainer) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'mb-4';
+        const bubble = document.createElement('div');
+        bubble.className = 'inline-block p-4 rounded-lg max-w-[80%] bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-100';
+        messageDiv.appendChild(bubble);
+        messagesContainer.appendChild(messageDiv);
+
+        // Collect full text before parsing
+        let fullText = '';
+        let i = 0;
+        const typeWriter = () => {
+          if (i < data.response.length) {
+            fullText += data.response.charAt(i);
+            bubble.innerHTML = parseMarkdown(fullText);
+            i++;
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            setTimeout(typeWriter, 20);
+          }
+        };
+        typeWriter();
+      }
+
+      saveHistory('assistant', data.response);
+    } catch (error) {
+      console.error('Error:', error);
+      const errorMessage = `Error: ${error.message}`;
+      appendMessage('system', errorMessage);
+      saveHistory('system', errorMessage);
+      if (messagesContainer && loadingIndicator) {
+        messagesContainer.removeChild(loadingIndicator);
+      }
+    } finally {
+      isLoading = false;
+      if (input && submitButton) {
+        input.disabled = false;
+        submitButton.disabled = false;
+        input.focus();
+      }
+    }
+  });
+
+  function appendMessage(role: string, content: string) {
+    if (!messagesContainer) return;
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `mb-2 ${role === 'user' ? 'text-right' : ''}`;
+    
+    const bubble = document.createElement('div');
+    bubble.className = `inline-block p-4 rounded-lg max-w-[80%] ${
+      role === 'user'
+        ? 'bg-blue-600 text-white'
+        : role === 'system'
+        ? 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-100'
+        : 'bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-100'
+    }`;
+
+    bubble.innerHTML = parseMarkdown(content);
+    messageDiv.appendChild(bubble);
+    messagesContainer.appendChild(messageDiv);
+    
+    // Ensure message container scrolls to bottom
+    if (messagesContainer) {
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+  }
+
+  // Save chat history to localStorage
+  function saveHistory(role: string, content: string) {
+    const { modelName } = getApiConfig();
+    if (!modelName) return;
+    
+    // Get history for specific model
+    const historyKey = `${modelName}-history`;
+    let chatHistory = JSON.parse(localStorage.getItem(historyKey) || '[]');
+    
+    // Add new message
+    chatHistory.push({ role, content });
+    
+    // Limit history length to 12 messages (6 conversation rounds)
+    if (chatHistory.length > 12) {
+      chatHistory = chatHistory.slice(-12);
+    }
+    
+    // Save updated history
+    localStorage.setItem(historyKey, JSON.stringify(chatHistory));
+  }
+
+  // Modify copy button event listener
+  document.addEventListener('click', async (e) => {
+    const target = e.target as HTMLElement;
+    if (target.classList.contains('copy-button')) {
+      const code = target.getAttribute('data-code');
+      if (code) {
+        try {
+          await navigator.clipboard.writeText(code);
+          const originalText = target.textContent;
+          target.textContent = 'Copied!';
+          target.classList.add('bg-green-600');
+          setTimeout(() => {
+            target.textContent = originalText;
+            target.classList.remove('bg-green-600');
+          }, 2000);
+        } catch (err) {
+          console.error('Failed to copy:', err);
+          target.textContent = 'Failed!';
+          target.classList.add('bg-red-600');
+          setTimeout(() => {
+            target.textContent = 'Copy';
+            target.classList.remove('bg-red-600');
+          }, 2000);
+        }
+      }
+    }
+  });
+
+  // Get textarea element
+  const textarea = document.getElementById('message-input') as HTMLTextAreaElement;
+
+  // Function to auto-resize
+  function autoResize() {
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
+  }
+
+  // Add input event listener
+  textarea?.addEventListener('input', autoResize);
+
+  // Handle enter key to send message
+  textarea?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      const submitButton = document.querySelector('button[type="submit"]');
+      submitButton?.click();
+    }
+  });
+</script> 

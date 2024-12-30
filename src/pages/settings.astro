@@ -1,0 +1,18 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ApiKeyForm from '../components/Settings/ApiKeyForm.astro';
+
+// If environment variable doesn't allow showing settings page, redirect to homepage
+if (import.meta.env.PUBLIC_SHOW_SETTINGS !== 'true') {
+  return Astro.redirect('/');
+}
+---
+
+<Layout title="Settings - AI Research Assistant">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="bg-white dark:bg-slate-800 shadow-lg rounded-xl p-6">
+      <h1 class="text-2xl font-semibold text-slate-900 dark:text-white mb-6">API Settings</h1>
+      <ApiKeyForm />
+    </div>
+  </div>
+</Layout> 

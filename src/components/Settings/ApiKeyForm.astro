@@ -1,0 +1,151 @@
+---
+---
+
+<form id="api-settings-form" class="space-y-6">
+  <div class="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg p-6 mb-6 text-white shadow-md">
+    <h3 class="text-lg font-semibold mb-2">API Configuration</h3>
+    <p class="text-blue-50 text-sm">Configure your API keys for different AI models. These keys will be stored securely in your browser's local storage.</p>
+  </div>
+
+  <div class="grid grid-cols-1 gap-6">
+    <div class="bg-white dark:bg-slate-900 rounded-lg shadow-md p-6 border border-slate-200 dark:border-slate-700">
+      <h4 class="text-base font-semibold text-slate-900 dark:text-white mb-4">Model Settings</h4>
+      
+      <div class="space-y-3">
+        <label for="model-name" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Model Name</label>
+        <input
+          type="text"
+          id="model-name"
+          name="model-name"
+          placeholder="e.g. gemini-1.5-pro"
+          class="block w-full rounded-md border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm p-2.5"
+        />
+        <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Enter the model identifier (e.g. gemini-1.5-pro, gpt-4-turbo-preview)</p>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-900 rounded-lg shadow-md p-6 border border-slate-200 dark:border-slate-700">
+      <h4 class="text-base font-semibold text-slate-900 dark:text-white mb-4">API Keys</h4>
+      
+      <div class="grid gap-4">
+        <div class="space-y-2">
+          <label for="openai-key" class="block text-sm font-medium text-slate-700 dark:text-slate-300">OpenAI API Key</label>
+          <input
+            type="password"
+            id="openai-key"
+            name="openai-key"
+            class="block w-full rounded-md border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm p-2.5"
+          />
+        </div>
+
+        <div class="space-y-2">
+          <label for="claude-key" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Anthropic Claude API Key</label>
+          <input
+            type="password"
+            id="claude-key"
+            name="claude-key"
+            class="block w-full rounded-md border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm p-2.5"
+          />
+        </div>
+
+        <div class="space-y-2">
+          <label for="google-key" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Google AI API Key</label>
+          <input
+            type="password"
+            id="google-key"
+            name="google-key"
+            class="block w-full rounded-md border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm p-2.5"
+          />
+        </div>
+
+        <div class="space-y-2">
+          <label for="deepseek-key" class="block text-sm font-medium text-slate-700 dark:text-slate-300">DeepSeek API Key</label>
+          <input
+            type="password"
+            id="deepseek-key"
+            name="deepseek-key"
+            class="block w-full rounded-md border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm p-2.5"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex justify-end mt-6">
+    <button
+      type="submit"
+      class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg shadow-sm text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      </svg>
+      Save Settings
+    </button>
+  </div>
+
+  <div id="success-message" class="hidden fixed bottom-4 right-4 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100 rounded-lg p-4 shadow-md border border-green-200 dark:border-green-800 transform transition-all duration-300">
+    <div class="flex items-center">
+      <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      </svg>
+      Settings saved successfully!
+    </div>
+  </div>
+</form>
+
+<script>
+  const form = document.getElementById('api-settings-form');
+  const successMessage = document.getElementById('success-message');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(e.target as HTMLFormElement);
+    const settings: Record<string, string> = {};
+    
+    // Collect all input values
+    formData.forEach((value, key) => {
+      if (value) { // Only save non-empty values
+        settings[key] = value.toString();
+      }
+    });
+
+    // Save to localStorage
+    localStorage.setItem('api-settings', JSON.stringify(settings));
+
+    // Show success message
+    if (successMessage) {
+      successMessage.classList.remove('hidden');
+      setTimeout(() => {
+        successMessage.classList.add('hidden');
+      }, 3000);
+    }
+
+    // For debugging: print saved settings
+    console.log('Saved settings:', settings);
+  });
+
+  // Fill in settings when page loads
+  window.addEventListener('load', () => {
+    // Try to get settings from localStorage first
+    const savedSettings = localStorage.getItem('api-settings');
+    const settings = savedSettings ? JSON.parse(savedSettings) : {};
+    
+    // Set default values (prioritize localStorage values, then environment variables)
+    const defaultSettings = {
+      'model-name': settings['model-name'] || import.meta.env.PUBLIC_DEFAULT_MODEL,
+      'openai-key': settings['openai-key'] || import.meta.env.PUBLIC_OPENAI_API_KEY,
+      'claude-key': settings['claude-key'] || import.meta.env.PUBLIC_ANTHROPIC_API_KEY,
+      'google-key': settings['google-key'] || import.meta.env.PUBLIC_GOOGLE_API_KEY,
+      'deepseek-key': settings['deepseek-key'] || import.meta.env.PUBLIC_DEEPSEEK_API_KEY,
+    };
+
+    // Fill the form
+    Object.entries(defaultSettings).forEach(([key, value]) => {
+      const input = document.querySelector(`[name="${key}"]`) as HTMLInputElement;
+      if (input && value) {
+        input.value = value as string;
+      }
+    });
+  });
+</script> 
