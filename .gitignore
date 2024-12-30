@@ -49,3 +49,14 @@ coverage/
 *.tmp
 *.temp
 .temp/
+
+# Docker
+.docker/
+docker-compose.override.yml
+docker-compose.*.yml
+!docker-compose.yml
+.dockerignore
+
+# Container data
+data/
+volumes/

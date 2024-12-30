@@ -7,6 +7,10 @@ import vercel from '@astrojs/vercel/serverless';
 export default defineConfig({
   integrations: [tailwind()],
   output: 'server',
+  server: {
+    host: true,
+    port: 4321
+  },
   adapter: vercel(),
   vite: {
     css: {

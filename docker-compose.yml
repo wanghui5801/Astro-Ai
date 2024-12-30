@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  ai-assistant:
+    image: your-dockerhub-username/ai-assistant:latest
+    ports:
+      - "4321:4321"
+    environment:
+      - PUBLIC_OPENAI_API_KEY=${PUBLIC_OPENAI_API_KEY}
+      - PUBLIC_ANTHROPIC_API_KEY=${PUBLIC_ANTHROPIC_API_KEY}
+      - PUBLIC_GOOGLE_API_KEY=${PUBLIC_GOOGLE_API_KEY}
+      - PUBLIC_DEEPSEEK_API_KEY=${PUBLIC_DEEPSEEK_API_KEY}
+      - PUBLIC_DEFAULT_MODEL=${PUBLIC_DEFAULT_MODEL}
+      - PUBLIC_SHOW_SETTINGS=${PUBLIC_SHOW_SETTINGS}
+    restart: unless-stopped
