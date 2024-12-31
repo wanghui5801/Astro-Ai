@@ -101,13 +101,7 @@ PUBLIC_SHOW_SETTINGS=true
 docker run -d \
   --name ai-assistant \
   -p 4321:4321 \
-  -e PUBLIC_OPENAI_API_KEY=your-openai-key \
-  -e PUBLIC_ANTHROPIC_API_KEY=your-anthropic-key \
-  -e PUBLIC_GOOGLE_API_KEY=your-google-key \
-  -e PUBLIC_DEEPSEEK_API_KEY=your-deepseek-key \
-  -e PUBLIC_DEFAULT_MODEL=gpt-4-turbo-preview \
-  -e PUBLIC_SHOW_SETTINGS=true \
-  -e PUBLIC_ACCESS_PASSWORD=your-access-password \
+  --env-file .env \
   xhh1128/astro-ai:latest
 ```
 

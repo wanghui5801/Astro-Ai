@@ -13,6 +13,7 @@ WORKDIR /app
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY package.json .
+COPY .env* .
 
 EXPOSE 4321
 CMD ["node", "./dist/server/entry.mjs"]
