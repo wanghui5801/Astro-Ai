@@ -2,5 +2,8 @@
   "github": {
     "silent": true
   },
-  "framework": "astro"
+  "framework": "astro",
+  "buildCommand": "DEPLOY_TARGET=vercel npm run build",
+  "outputDirectory": "dist",
+  "installCommand": "npm install"
 } 

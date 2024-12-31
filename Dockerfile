@@ -4,6 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
+ENV DEPLOY_TARGET=node
 RUN npm run build
 
 # Runtime stage

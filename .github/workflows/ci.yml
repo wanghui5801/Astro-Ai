@@ -51,4 +51,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: ai-assistant-dist.zip
-          generate_release_notes: true 
+          generate_release_notes: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false 
