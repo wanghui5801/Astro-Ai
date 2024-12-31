@@ -28,6 +28,14 @@ jobs:
         
       - name: Build
         run: npm run build
+        env:
+          PUBLIC_OPENAI_API_KEY: ${{ secrets.PUBLIC_OPENAI_API_KEY }}
+          PUBLIC_ANTHROPIC_API_KEY: ${{ secrets.PUBLIC_ANTHROPIC_API_KEY }}
+          PUBLIC_GOOGLE_API_KEY: ${{ secrets.PUBLIC_GOOGLE_API_KEY }}
+          PUBLIC_DEEPSEEK_API_KEY: ${{ secrets.PUBLIC_DEEPSEEK_API_KEY }}
+          PUBLIC_DEFAULT_MODEL: 'gpt-3.5-turbo'
+          PUBLIC_SHOW_SETTINGS: 'true'
+          PUBLIC_ACCESS_PASSWORD: 'test-password'
         
       - name: Create dist archive
         if: startsWith(github.ref, 'refs/tags/')

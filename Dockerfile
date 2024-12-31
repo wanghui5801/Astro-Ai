@@ -6,12 +6,13 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-# Runtime stage
+# Development stage
 FROM node:18-alpine
 WORKDIR /app
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY package.json .
+COPY .env .
 
 EXPOSE 4321
-CMD ["npm", "run", "preview", "--", "--host"]
+CMD ["node", "./dist/server/entry.mjs"]
