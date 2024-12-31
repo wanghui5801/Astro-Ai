@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   ai-assistant:
-    build: .
+    image: xhh1128/astro-ai:latest
     ports:
       - "4321:4321"
     environment:
