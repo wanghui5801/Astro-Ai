@@ -131,20 +131,23 @@
     const savedSettings = localStorage.getItem('api-settings');
     const settings = savedSettings ? JSON.parse(savedSettings) : {};
     
+    // 使用 window._env_ 替代 import.meta.env
+    const env = window._env_ || {};
+    
     // Set default values (prioritize localStorage values, then environment variables)
     const defaultSettings = {
-      'model-name': settings['model-name'] || import.meta.env.PUBLIC_DEFAULT_MODEL,
-      'openai-key': settings['openai-key'] || import.meta.env.PUBLIC_OPENAI_API_KEY,
-      'claude-key': settings['claude-key'] || import.meta.env.PUBLIC_ANTHROPIC_API_KEY,
-      'google-key': settings['google-key'] || import.meta.env.PUBLIC_GOOGLE_API_KEY,
-      'deepseek-key': settings['deepseek-key'] || import.meta.env.PUBLIC_DEEPSEEK_API_KEY,
+      'model-name': settings['model-name'] || env.PUBLIC_DEFAULT_MODEL,
+      'openai-key': settings['openai-key'] || env.PUBLIC_OPENAI_API_KEY,
+      'claude-key': settings['claude-key'] || env.PUBLIC_ANTHROPIC_API_KEY,
+      'google-key': settings['google-key'] || env.PUBLIC_GOOGLE_API_KEY,
+      'deepseek-key': settings['deepseek-key'] || env.PUBLIC_DEEPSEEK_API_KEY,
     };
 
-    // Fill the form
+    // Fill in form fields with default values
     Object.entries(defaultSettings).forEach(([key, value]) => {
-      const input = document.querySelector(`[name="${key}"]`) as HTMLInputElement;
-      if (input && value) {
-        input.value = value as string;
+      const input = document.querySelector(`[name="${key}"]`);
+      if (input) {
+        input.value = value || '';
       }
     });
   });
