@@ -131,7 +131,7 @@
     const savedSettings = localStorage.getItem('api-settings');
     const settings = savedSettings ? JSON.parse(savedSettings) : {};
     
-    // 使用 window._env_ 替代 import.meta.env
+    // Use window._env_ instead of import.meta.env
     const env = window._env_ || {};
     
     // Set default values (prioritize localStorage values, then environment variables)

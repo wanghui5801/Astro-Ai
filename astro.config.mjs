@@ -6,9 +6,9 @@ import vercel from '@astrojs/vercel/serverless';
 
 const DEPLOY_TARGET = process.env.DEPLOY_TARGET || 'node';
 
-// 根据环境判断是否需要处理环境变量
+// Determine whether to process environment variables based on the environment
 const getEnvConfig = () => {
-  // Docker 环境下不需要额外处理环境变量
+  // No additional environment variable processing needed in Docker environment
   if (process.env.DOCKER_ENV === 'true') {
     return {
       'import.meta.env.PUBLIC_OPENAI_API_KEY': 'process.env.PUBLIC_OPENAI_API_KEY',
@@ -21,7 +21,7 @@ const getEnvConfig = () => {
     };
   }
 
-  // 开发环境和其他环境下的配置
+  // Configuration for development and other environments
   return {
     'import.meta.env.PUBLIC_OPENAI_API_KEY': JSON.stringify(process.env.PUBLIC_OPENAI_API_KEY),
     'import.meta.env.PUBLIC_ANTHROPIC_API_KEY': JSON.stringify(process.env.PUBLIC_ANTHROPIC_API_KEY),

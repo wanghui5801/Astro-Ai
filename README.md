@@ -4,9 +4,10 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)](https://hub.docker.com/r/xhh1128/astro-ai)
+[![Docker Pulls](https://img.shields.io/docker/pulls/xhh1128/astro-ai.svg)](https://hub.docker.com/r/xhh1128/astro-ai)
 [![Vercel](https://img.shields.io/badge/Vercel-000000?logo=vercel&logoColor=white)](https://vercel.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-<!-- [![Docker Pulls](https://img.shields.io/docker/pulls/xhh1128/astro-ai.svg)](https://hub.docker.com/r/xhh1128/astro-ai) -->
+
 
 An AI-powered assistant built with Astro and multiple language model integrations.
 
@@ -99,7 +100,7 @@ PUBLIC_SHOW_SETTINGS=true
 3. Run with Docker:
 ```bash
 docker run -d \
-  --name ai-assistant \
+  --name astro-ai \
   -p 4321:4321 \
   --env-file .env \
   xhh1128/astro-ai:latest
@@ -112,7 +113,7 @@ Create `docker-compose.yml`:
 version: '3.8'
 
 services:
-  ai-assistant:
+  astro-ai:
     image: xhh1128/astro-ai:latest
     ports:
       - "4321:4321"

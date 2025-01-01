@@ -9,7 +9,7 @@ export function getApiConfig() {
   let env: Record<string, string> = {};
   
   if (isServer) {
-    // 服务器端：从 import.meta.env 读取
+    // Server side: read from import.meta.env
     env = {
       PUBLIC_OPENAI_API_KEY: import.meta.env.PUBLIC_OPENAI_API_KEY || '',
       PUBLIC_ANTHROPIC_API_KEY: import.meta.env.PUBLIC_ANTHROPIC_API_KEY || '',
@@ -23,7 +23,7 @@ export function getApiConfig() {
       console.warn('Environment variables not loaded correctly on server side');
     }
   } else {
-    // 客户端：从 window._env_ 读取
+    // Client side: read from window._env_
     env = window._env_ || {};
     if (!env.PUBLIC_OPENAI_API_KEY) {
       console.warn('Environment variables not loaded correctly on client side');
