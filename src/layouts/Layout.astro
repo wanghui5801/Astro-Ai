@@ -16,6 +16,17 @@ const { title } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<script>
+			window._env_ = {
+				PUBLIC_OPENAI_API_KEY: import.meta.env.PUBLIC_OPENAI_API_KEY || '',
+				PUBLIC_ANTHROPIC_API_KEY: import.meta.env.PUBLIC_ANTHROPIC_API_KEY || '',
+				PUBLIC_GOOGLE_API_KEY: import.meta.env.PUBLIC_GOOGLE_API_KEY || '',
+				PUBLIC_DEEPSEEK_API_KEY: import.meta.env.PUBLIC_DEEPSEEK_API_KEY || '',
+				PUBLIC_DEFAULT_MODEL: import.meta.env.PUBLIC_DEFAULT_MODEL || '',
+				PUBLIC_SHOW_SETTINGS: import.meta.env.PUBLIC_SHOW_SETTINGS || '',
+				PUBLIC_ACCESS_PASSWORD: import.meta.env.PUBLIC_ACCESS_PASSWORD || ''
+			};
+		</script>
+		<script>
 			// Check theme settings in local storage
 			if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
 				document.documentElement.classList.add('dark')
